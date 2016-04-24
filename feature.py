@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import re
 import numpy as np
 import gazetter as g
@@ -20,7 +22,7 @@ class Feature:
 		f4 = len(list(self.db.cities.find({"kota":re.compile("^"+token[index]+"$", re.IGNORECASE)})))>=1
 		f5 = token[index-1] == "di"
 		#f6 = label[index-1] == "ORG"
-		f6 = token[index-1] in g.gaz_org
+		f6 = token[index-1] in g.gaz_org or token[index-1] in g.gaz_sp
 		try:
 		    data = token[index+1]
 		except IndexError:
