@@ -75,7 +75,7 @@ class maxent:
 				en = np.array([pdist.prob('ORG'), pdist.prob('LOC'), pdist.prob('NUM'), pdist.prob('CON')])
 				en_index = np.argmax(en)
 				print en
-				if token[index] not in "/":
+				if "/" not in token[index]:
 					temp_replace = token[index].replace(token[index], token[index]+"/"+entity[en_index])
 					#apabila entitas maka append
 					temp_sentence.append(temp_replace)

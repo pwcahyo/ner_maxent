@@ -16,7 +16,7 @@ class Feature:
 
 	def template_feature(self, token, label, index):
 		# apabila other maka return None
-		if label and label[index] == "O": 
+		if label and (label[index] == ("O" or "o")): 
 			return 
 		elif token[index] in (self.gaz_sp or self.gaz_o):
 			#apabila data sekarang ada didalam gazetter other dan satuan penderita

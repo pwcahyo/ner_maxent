@@ -3,34 +3,14 @@ import regexp as regx
 import kamus_angka as ka
 
 class Func:
-	w = regx.w
 	def check_terbilang(self, terbilang):
 		arr_terbilang = terbilang.split(" ")
 		arr_angka = []
 		result = {}
 		check = False
-		lbl = False
-		arr_data = {}
-		count = 0
 		for index, data in enumerate(arr_terbilang):
 			try:
-				if "/" in data :
-					#conditional bila label ada, contoh empat puluh/num [label num]
-					data = self.w.search(data).group(1)
-					if data in ka.check_angka :
-						lbl = True
-
-				# check apakah data termasuk dalam kamus angka	
 				check = data in ka.check_angka
-
-				# isikan array angka berdasarkan banyaknya karakter huruf angka pada teks,
-				# contoh lima orang meninggal sedangkan tiga orang mati, maka 5 orang meninggal sedangkan 3 orang mati
-				end_num = arr_terbilang[index+1]
-				if "/" in end_num:
-					karakter = self.w.search(arr_terbilang[index+1]).group(1)
-				else:
-					karakter = arr_terbilang[index+1]
-
 			except IndexError:
 			    check = False
 			
@@ -38,16 +18,8 @@ class Func:
 				#apabila check adalah true maka lakukan penambahan array terbilang
 				arr_angka.append(data)
 
-				if karakter not in ka.check_angka:
-					# apabila karakter dibelakang terbilang maka lakukan pemenggalan terbilang
-					arr_data[count] = (" ".join(arr_angka))
-					count+=1
-					arr_angka = []
-
 		#join list arr_angka agar ada penambahan space, contoh : ['dua', 'puluh', 'lima'] menjadi "dua puluh lima"
-		#result["angka"] = " ".join(arr_angka)
-		result["angka"] = arr_data
-		result["label"] = lbl
+		result["angka"] = " ".join(arr_angka)
 		result["sentence"] = terbilang
 		return result
 
@@ -59,23 +31,17 @@ class Func:
 			return False
 		return array[idx]
 
-	def replace_string(self, sentence):
+	def convert_terbilang_to_number(self, sentence):
 		data = self.check_terbilang(sentence)
-		label = data["label"]
-		arr_terbilang = data["angka"]
-		data_terbilang = data["sentence"]
-		for index, terbilang in enumerate(arr_terbilang):
-			temp_num = self.convert(arr_terbilang[index])
-			if label :
-				# jika label ada, atau pada saat proses pelatihan iis
-				data_terbilang = data_terbilang.replace(arr_terbilang[index]+"/num", temp_num+"/num")
-			else:
-				# jika  label tidak ada, atau pada saat proses ner
-				data_terbilang = data_terbilang.replace(arr_terbilang[index], temp_num)
-		return data_terbilang
-
-	def convert(self, terbilang):
+		#instance data terbilang
+		terbilang = data["angka"]
+		# pecah data terbilang
 		angka = terbilang.split(" ")
+		# instance data kalimat
+		kalimat = data["sentence"]
+		if not terbilang:
+			return kalimat
+
 		angka_str = ""
 
 		#diambil dari kamus data
@@ -137,14 +103,9 @@ class Func:
 				angka_str = temp_str
 				print "angka_str : %s, temp_int : %i" %(angka_str,temp_int)
 
-		return angka_str
-
-	def terbilang_to_number(self, sentence):
-		number = self.replace_string(sentence)
-		return number
-
+		return kalimat.replace(terbilang, angka_str)
 
 
 #main process
-#data = Func()
-#print data.convert_terbilang_to_number(kalimat.lower())
+data = Func()
+print data.convert_terbilang_to_number("lima puluh satu")
