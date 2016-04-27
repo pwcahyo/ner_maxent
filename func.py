@@ -39,6 +39,8 @@ class Func:
 		angka = terbilang.split(" ")
 		# instance data kalimat
 		kalimat = data["sentence"]
+		if not terbilang:
+			return kalimat
 
 		angka_str = ""
 
@@ -105,5 +107,5 @@ class Func:
 
 
 #main process
-data = Func()
-print data.convert_terbilang_to_number("tiga puluh milyar sembilan ratus juta lima puluh tujuh makan bakso")
+#data = Func()
+#print data.convert_terbilang_to_number(kalimat.lower())

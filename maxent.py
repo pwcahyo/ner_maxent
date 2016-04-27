@@ -15,19 +15,22 @@ class maxent:
 		lbl = regx.lbl
 
 		#define unclean temporary array data train and label
-		label = []
 		train = []
 
 		#jika training iis maka lakukan pencarian binary feature dengan label
 		#contoh : (dict(f1=0, f2=0, f3=0, f4=0, f5=0, f6=0, f7=1, f8=1, f9=0, f12=0, f10=0, f11=0}, "NUM"))
 		if type_feature == "train_iis":
-			for index, data in enumerate(sentence):
+			for index, data in enumerate(sentence): 
+				label = []
 				token = word_tokenize(data)
 				for index, data in enumerate(token):
-					#add label to array
-					label.append(lbl.search(token[index]).group(1))
-					#add word to array
-					token[index] = w.search(token[index]).group(1)
+					if "/" in data :
+						#add label to array
+						label.append(lbl.search(token[index]).group(1))
+						#add word to array
+						token[index] = w.search(token[index]).group(1)
+					else:
+						label.append("O")
 				for index, data in enumerate(token):
 					#feature processing panggil class feature
 					featuretrain = f.Feature()
@@ -38,6 +41,7 @@ class maxent:
 			#jika training ner atau selain iis maka hanya melakukan pencarian binary feature, tidak dengan label
 			#contoh : (dict(f1=0, f2=0, f3=0, f4=0, f5=0, f6=0, f7=1, f8=1, f9=0, f12=0, f10=0, f11=0}))
 			token = word_tokenize(sentence)
+			label = []
 			for index, data in enumerate(token):
 				#feature processing panggil class feature
 				featuretrain = f.Feature()
@@ -47,7 +51,6 @@ class maxent:
 
 		# filter array empty/none karena Other atau entitas O tidak diproses
 		train_set = filter(None, train)
-		#print train_set
 		return train_set
 
 	def training_weight_iis(self, sentence):
@@ -60,45 +63,26 @@ class maxent:
 		self.classification = classification
 		token = word_tokenize(sentence)
 		entity = ["ORG", "LOC", "NUM", "CON"]
+		temp_sentence = []
 		for index, feature in enumerate(featureset):
 			#print
 			#print ' '*20+'%s' %token[index]
 			if sum(feature.values()) != 0:
+				#jika bukan other atau sum feature tidak sama dengan 0
 				print ' '*4+'p(ORG)      p(LOC)      p(NUM)      p(CON)'
 				print '-'*(28+24)
 				pdist = classification.prob_classify(feature)
 				en = np.array([pdist.prob('ORG'), pdist.prob('LOC'), pdist.prob('NUM'), pdist.prob('CON')])
 				en_index = np.argmax(en)
-				sentence = string.replace(sentence, token[index], token[index]+"/"+entity[en_index])
 				print en
-			#else: print " "*20+"Other"
-			#print
+				if token[index] not in "/":
+					temp_replace = token[index].replace(token[index], token[index]+"/"+entity[en_index])
+					#apabila entitas maka append
+					temp_sentence.append(temp_replace)
+			else:
+				#apabila bukan entitas maka append
+				temp_sentence.append(token[index])
+
+		#sentence = " ".join(str(temp_sentence))
+		sentence = " ".join(temp_sentence)
 		return sentence
-
-
-
-
-sentence = []
-sentence.append("3/NUM warga/O situbondo/LOC meninggal/CON karena/O dbd/O")
-sentence.append("di/O tegal/LOC 4/NUM orang/O menderita/CON dbd/O")
-sentence.append("10/NUM orang/O mati/CON karena/O dbd/O di/O bantul/LOC")
-sentence.append("di/O sleman/LOC 4/NUM orang/O menderita/CON dbd/O")
-"""
-sentence.append("di/O tegal/LOC 4/NUM orang/O menderita/CON dbd/O")
-sentence.append("di/O sleman/LOC 4/NUM orang/O menderita/CON dbd/O")
-sentence.append("di/O tegal/LOC 4/NUM orang/O menderita/CON dbd/O")
-sentence.append("jombang/LOC 5/NUM warga/O terkena/CON dbd/O")
-sentence.append("10/NUM orang/O mati/CON karena/O dbd/O di/O bantul/LOC")
-sentence.append("bantul/LOC 5/NUM anak/O mati/CON karena/O dbd/O")
-"""
-classify = maxent()
-classification = classify.training_weight_iis(sentence)
-"""
-print
-print classify.training_ner("jombang 5 warga terkena dbd", classification)
-print classify.training_ner("di jombang 5 warga terkena dbd", classification)
-print classify.training_ner("5 warga bantul terkena dbd", classification)
-print
-"""
-print classify.training_ner("5 warga bantul terkena dbd", classification)
-print classify.training_ner("di jombang 5 warga terkena dbd", classification)
