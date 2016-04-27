@@ -28,6 +28,7 @@ class Feature:
 		f2 = token[index-1] == "di"
 		f3 = token[index] in self.gaz_org
 		f4 = len(list(self.db.cities.find({"kota":re.compile("^"+token[index]+"$", re.IGNORECASE)})))>=1
+		#f4 = len(list(self.db.cities.find({"kota":{"$regex": u""+token[index], "$options": "-i"}})))>=1
 		f5 = token[index-1] == "di"
 		#f6 = label[index-1] == "ORG"
 		f6 = token[index-1] in self.gaz_org or token[index-1] in self.gaz_sp
