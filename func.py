@@ -25,15 +25,22 @@ class Func:
 
 				# isikan array angka berdasarkan banyaknya karakter huruf angka pada teks,
 				# contoh lima orang meninggal sedangkan tiga orang mati, maka 5 orang meninggal sedangkan 3 orang mati
-				end_num = arr_terbilang[index+1]
-				if "/" in end_num:
-					karakter = self.w.search(arr_terbilang[index+1]).group(1)
-				else:
-					karakter = arr_terbilang[index+1]
-
+				try:
+					#check apakah ada arr_terbilang[index+1]
+					end_num = arr_terbilang[index+1]
+					if "/" in end_num:
+						karakter = self.w.search(arr_terbilang[index+1]).group(1)
+					else:
+						karakter = arr_terbilang[index+1]
+				except:
+					#apabila arr_terbilang[index+1] tidak ada
+					end_num = False
+					karakter = False
 			except IndexError:
 			    check = False
-			
+
+			#print check
+
 			if check:
 				#apabila check adalah true maka lakukan penambahan array terbilang
 				arr_angka.append(data)
@@ -135,12 +142,13 @@ class Func:
 				temp_str = angka_str.replace('0','')
 				temp_str += str(temp_int)
 				angka_str = temp_str
-				print "angka_str : %s, temp_int : %i" %(angka_str,temp_int)
+				#print "angka_str : %s, temp_int : %i" %(angka_str,temp_int)
 
 		return angka_str
 
 	def terbilang_to_number(self, sentence):
 		number = self.replace_string(sentence)
+		print number
 		return number
 
 

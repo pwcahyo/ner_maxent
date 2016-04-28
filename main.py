@@ -32,6 +32,6 @@ classification = classify.training_weight_iis(paragraph)
 #==========================================================================
 
 # pelatihan NER
-sentence = "di padang lima orang meninggal gara - gara dbd tujuh kritis. solo tiga orang tewas terkena dbd"
+sentence = "padang terkena dbd meninggal lima. tujuh orang mati karena dbd di wates"
 print classify.training_ner(sentence, classification)
 #print len(ner)
