@@ -117,14 +117,14 @@ class maxent:
 					word = sent_stem
 				div_sentence.append(word)
 			train.append(" ".join(div_sentence))
-			sentence_ne = self.per_sentence_ner("".join(train), " ".join(tokenize), classification)
+			sentence_ne = self.div_sentence_ner("".join(train), " ".join(tokenize), classification)
 			arr_sentence.append(sentence_ne)
 			#reset array train agar tidak diikutkan training ner
 			train = []
 
 		return arr_sentence
 
-	def per_sentence_ner(self, sentence_stem, sentence_unstem, classification):
+	def div_sentence_ner(self, sentence_stem, sentence_unstem, classification):
 		sentence_stem = sentence_stem.lower()
 		sentence_unstem = sentence_unstem.lower()
 		sent_stem_conv = self.func.terbilang_to_number(sentence_stem)

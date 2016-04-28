@@ -148,7 +148,6 @@ class Func:
 
 	def terbilang_to_number(self, sentence):
 		number = self.replace_string(sentence)
-		print number
 		return number
 
 
