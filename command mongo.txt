@@ -42,6 +42,7 @@ PENCARIAN AND DENGAN LEBIH KECIL DARI :
 db.barucoba.find({$and:[{"time_tweet" : {$regex : ".*5 Feb 15.*"}},{"index":{$lt:725}}]}
 
 
+# SHELL
 MONGODB [AGGREGATE]FIND WITH GROUP BY text_tweet (unique results)
 ====================================================================================================
 Dengan Document root : (mencari tweet unique berdasarkan text_tweet)
@@ -92,6 +93,13 @@ db['01'].group(
      }
 )
 ====================================================================================================
+
+#PYMONGO
+cursor = db['01'].aggregate(
+    [
+        {"$group": {"_id": "$url", "text_tweet": "$text_tweet"}}
+    ]
+)
 
 
 ADA : 4880 data
