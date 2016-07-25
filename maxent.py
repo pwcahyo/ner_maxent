@@ -11,7 +11,7 @@ import regexp as regx
 import string
 import re
 
-class maxent:
+class Maxent:
 	#regex find word (w) and label (lbl), especially in data train
 	w = regx.w
 	lbl = regx.lbl
@@ -67,6 +67,7 @@ class maxent:
 
 		# filter array empty/none karena Other atau entitas O tidak diproses
 		train_set = filter(None, train)
+		
 		return train_set
 
 	def training_weight_iis(self, paragraph):
@@ -85,9 +86,11 @@ class maxent:
 				div_sentence = []
 				for data in tokenize:
 					if "/" not in data:
+						# ubah menjadi kata dasar
 						sent_stem = self.stemmer.stem(data)
 						data = sent_stem
 					elif "/con" in data:
+						# ubah menjadi kata dasar kemudian dicocokan kedalam gazeter kondisi
 						sent_stem = self.stemmer.stem(self.w.search(data).group(1))
 						data = sent_stem+"/CON"
 					elif "/" in data:
@@ -97,6 +100,8 @@ class maxent:
 					div_sentence.append(data)
 				train.append(" ".join(div_sentence))
 
+		#print train
+		#melakukan training dengan sentence yang sudah diubah kedalam kata dasar
 		me_classifier = MaxentClassifier.train(self.binary_feature(train, "train_iis"), 'iis', trace=10, max_iter=100, min_lldelta=0.5)
 		return me_classifier
 
@@ -113,10 +118,12 @@ class maxent:
 			for word in tokenize:
 				check_kota = len(list(self.db.cities.find({"kota":re.compile("^"+word+"$", re.IGNORECASE)})))>=1
 				if not check_kota:
+					#apabila kata bukan kota maka dibuat kata dasar
 					sent_stem = self.stemmer.stem(word)
 					word = sent_stem
 				div_sentence.append(word)
 			train.append(" ".join(div_sentence))
+			#ket parameter : self.div_sentence_ner(kalimat_dengan_kata_dasar, kalimat_asli, jenis_klasifikasi) 
 			sentence_ne = self.div_sentence_ner("".join(train), " ".join(tokenize), classification)
 			arr_sentence.append(sentence_ne)
 			#reset array train agar tidak diikutkan training ner
@@ -125,24 +132,23 @@ class maxent:
 		return arr_sentence
 
 	def div_sentence_ner(self, sentence_stem, sentence_unstem, classification):
+		#kalimat sudah dicari kata dasar
 		sentence_stem = sentence_stem.lower()
-		sentence_unstem = sentence_unstem.lower()
 		sent_stem_conv = self.func.terbilang_to_number(sentence_stem)
+
+		#kalimat asli (tidak di jadikan kata dasar)
+		sentence_unstem = sentence_unstem.lower()
 		sent_unstem_conv = self.func.terbilang_to_number(sentence_unstem)
-		#print sent_stem_conv
-		
-		#print train
+
 		featureset = self.binary_feature(sent_stem_conv, "train_ner")
-		#print featureset
 		self.classification = classification
-		#print token
 		token = word_tokenize(sent_unstem_conv)
-		print token
 
 		entity = ["ORG", "LOC", "NUM", "CON"]
 		temp_sentence = []
 		
 		for index, feature in enumerate(featureset):
+			#print token[index]
 			#print feature
 			if sum(feature.values()) != 0:
 				#print feature

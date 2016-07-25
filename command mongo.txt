@@ -1,0 +1,128 @@
+mongo db operation :
+
+====================================================================================================
+delete database : 
+	use <nama_database>
+	db.dropDatabase();
+====================================================================================================
+copy data to another collection :
+	db.januari.find({"time_tweet" : {$regex : ".*20 Jan 2016.*"}}).forEach(function(doc){
+        db.duapuluh.insert(doc)
+	});
+
+-keterangan :
+	* januari collection asal
+	* duapuluh collection tujuan
+	* $regex : menggunakan regex filtering contain 20 Jan 2016
+====================================================================================================
+MONGODB dump :
+	mongodump --gzip --db indo_hospital
+====================================================================================================
+SELECT UNIQUE RESULts :
+	db.duadelapan.distinct('text_tweet')
+====================================================================================================
+REGEX URL :
+	db.duadelapan.find({"text_tweet" : { $regex : /^http/ }})
+====================================================================================================
+COPY DATABASE :
+	db.copyDatabase('twitter', 'twitter_backup')
+====================================================================================================
+SELECT TIDAK SAMA DENGAN 
+	db.duadelapan.find({"place":{$ne:""}})
+* place != ""
+* gunakan $nin untuk exceptl lebih dari dua syarat
+====================================================================================================
+INSENSITIVE PENCARIAN :
+db.cities.find({"kota":/^situbondo$/i})
+====================================================================================================
+PENCARIAN OR :
+db.cities.find({$or:[{"feature":"seat of a second-order administrative division"},{"feature":"populated place"}]})
+
+PENCARIAN AND DENGAN LEBIH KECIL DARI :
+db.barucoba.find({$and:[{"time_tweet" : {$regex : ".*5 Feb 15.*"}},{"index":{$lt:725}}]}
+
+
+MONGODB [AGGREGATE]FIND WITH GROUP BY text_tweet (unique results)
+====================================================================================================
+Dengan Document root : (mencari tweet unique berdasarkan text_tweet)
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+db['01'].aggregate( 
+    [ 
+        { 
+            $group : { 
+                        _id : "$text_tweet",
+                        data: { $push: "$$ROOT" } 
+                     } 
+        } 
+    ] 
+)
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Dengan seleksi object document : (mencari tweet unique berdasarkan text_tweet)
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+db['01'].aggregate( 
+    [ 
+        { 
+            $group : { 
+                        _id : "$text_tweet",
+                        data: {$push:{
+                            "id":"$data_id", 
+                            "username":"$username", 
+                            "text_tweet":"$text_tweet",
+                            "time":"$time_tweet"
+                            }} 
+                     } 
+        } 
+    ] 
+)
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Dengan group : (mencari tweet unique berdasarkan text_tweet)
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+db['01'].group(
+    {
+        key:{text_tweet:1},
+        reduce: function ( curr, result ) {
+           result.id = curr.url 
+           result.username = curr.username
+           result.time = curr.time_tweet
+        },
+        initial: {}
+     }
+)
+====================================================================================================
+
+
+ADA : 4880 data
+====================================================================================================
+Maxent NLP BOOK halaman 250
+
+Feature Based Linier Classifier folder 4.1 file 7.2
+
+response.xpath('//*[@class="tweet  "][1]/text()').extract()
+
+myfile = open(..., 'wb') wr = csv.writer(myfile, quoting=csv.QUOTE_ALL) wr.writerow(mylist)
+
+with open('datases.html','w') as f: f.write(response.body)
+
+
+Server API Key help
+AIzaSyDbKqU9pF2AYJoVp-f1zfRpjiltuFAtyLE
+Sender ID help
+329591385994
+
+Sender ID Hassan :
+1030178270781
+
+PHPMyAdmin 
+=======================
+URL : srgmobile.hassanarrizal.xyz/phpmyadmin
+User : adminiFIIshn
+Password : MR9VEpVdFdT3
+
+http://srgmobile.hassanarrizal.xyz/mail/testinggcm?gcm=APA91bENrAUQSH7T3wasU5ILhuAsa_Vdy8GazjcIGQEZweZO9qoXD3wMoVOX6vxleD6pE0INwc5-aUJX8AoG7UU5N1OynS3ljr-dKVJ1b6WZtYfvoDFrFYc
+
+$2y$14$67Ou6bVEikvef9Cflt.KG.KRh3Lv4DEgTd42\/j.cg5p0RajpIqUwi
+
+rdi971
