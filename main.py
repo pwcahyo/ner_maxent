@@ -34,7 +34,7 @@ paragraph.append("empat/NUM warga solo/LOC tewas/CON terkena/CON dbd")
 paragraph.append("empat/NUM warga bantul/LOC tewas/CON terkena/CON dbd")
 paragraph.append("enam/NUM warga lumajang/LOC tewas/CON terkena/CON dbd")
 paragraph.append("delapan/NUM warga bekasi/LOC tewas/CON terkena/CON dbd")
-paragraph.append("enam/NUM warga klaten/LOC tewas/CON terkena/CON dbd")
+paragraph.append("#info @janggal dua/NUM puluh/NUM warga klaten/LOC tewas/CON terkena/CON dbd bit.ly/1KuKsxO")
 #paragraph.append("meninggal/CON dunia, tiga/NUM orang di klaten/LOC karena dbd")
 
 #==========================================================================
@@ -48,6 +48,7 @@ paragraph_clean_tag = tag.tag_removal(paragraph, "train")
 paragraph_clean_stopword = stopword.stopword_removal(paragraph_clean_tag, "train")
 #finalisasi clean sentence
 paragraph_clean = paragraph_clean_stopword
+print paragraph_clean
 #--------------------------------------------------------------------------
 # Proses Training IIS
 #--------------------------------------------------------------------------
@@ -68,14 +69,15 @@ classification = classify.training_weight_iis(paragraph_clean)
 #==========================================================================
 # Preprocessing NER
 #--------------------------------------------------------------------------
-#sentence = "#kicauHealth dbd Masuk Jurnal Internasional, Penelitian RSPAD Buka Peluang 'Kalahkan' dbd bit.ly/1KuKsxO"
-sentence = "di yogyakarta lima orang terkena dbd"
+sentence = "#kicauHealth di Yogyakarta tiga puluh orang penderita dbd meninggal, Penelitian RSPAD Buka Peluang 'Kalahkan' dbd bit.ly/1KuKsxO"
+#sentence = "di yogyakarta lima orang terkena dbd"
 #clean tag. example : #, @, link internet
 sentence_clean_tag = tag.tag_removal(sentence, "ner")
 #clean stopword. example : yah, hlo 
 sentence_clean_stopword = stopword.stopword_removal(sentence_clean_tag, "ner")
 #finalisasi clean sentence
 sentence_clean = sentence_clean_stopword
+print sentence_clean
 
 #print " ".join(regx.coba.sub(" ",sentence_clean).split())  
 #--------------------------------------------------------------------------

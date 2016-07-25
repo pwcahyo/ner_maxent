@@ -50,7 +50,7 @@ class Feature:
 			#apabila label tidak ada, saat data train tidak teranotasi
 			result = (dict(f1=b_ft[0], f2=b_ft[1], f3=b_ft[2], f4=b_ft[3], f5=b_ft[4], f6=b_ft[5], f7=b_ft[6], f8=b_ft[7], f9=b_ft[8], f10=b_ft[9]))
 		#print token[index]
-		#print result
+		print result
 
 		return result
 

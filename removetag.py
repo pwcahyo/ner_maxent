@@ -16,10 +16,9 @@ class RemoveTag:
 		# remove hashtag, tag, code html with start &
 		#sentences = " ".join(regx.coba.sub(" ",sentence).split())
 		if type=="train":
-			temp_sentence = " ".join(regx.symbol_train.sub(" ",sentence).split())
+			sentence_clean = " ".join(regx.symbol_train.sub(" ",sentence).split())
 		else:
-			temp_sentence = " ".join(regx.symbol_ner.sub(" ",sentence).split())
-		sentence_clean = " ".join(regx.tag.sub(" ",temp_sentence).split())
+			sentence_clean = " ".join(regx.symbol_ner.sub(" ",sentence).split())
 
 		return sentence_clean
 
@@ -35,8 +34,8 @@ class RemoveTag:
 
 	def clean_sentence(self, sentence, type):
 		#membersihkan perkalimat
-		temp_sentence = self.punctuation_remove(sentence, type) 
-		sentence_clean = self.tld_remove(temp_sentence)
+		temp_sentence = self.tld_remove(sentence)
+		sentence_clean = self.punctuation_remove(temp_sentence, type) 
 		return sentence_clean
 
 	def tag_removal(self, paragraph, type):
@@ -53,7 +52,7 @@ class RemoveTag:
 			return self.clean_sentence(paragraph, type)
 
 
-sentence = "#kicauHealth Masuk Jurnal Internasional, Penelitian RSPAD Buka Peluang 'Kalahkan' DBD bit.ly/1KuKsxO"
-func = RemoveTag()
+#sentence = "#kicauHealth Masuk Jurnal Internasional, Penelitian RSPAD Buka Peluang 'Kalahkan' DBD bit.ly/1KuKsxO"
+#func = RemoveTag()
 #print func.tag_removal(sentence, "ner")
 
