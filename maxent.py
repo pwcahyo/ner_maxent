@@ -103,14 +103,16 @@ class Maxent:
 		#print train
 		#melakukan training dengan sentence yang sudah diubah kedalam kata dasar
 		me_classifier = MaxentClassifier.train(self.binary_feature(train, "train_iis"), 'iis', trace=10, max_iter=100, min_lldelta=0.5)
+		#print me_classifier.show_most_informative_features()
 		return me_classifier
 
 	def training_ner(self, paragraph, classification):
 		sentence = sent_tokenize(paragraph)
 		#print paragraph
 		
-		arr_sentence = []
+		#result = []
 		train = []
+		sentence_ne = ""
 		# 1. Pemecahan paragraf kedalam kalimat
 		for index, data in enumerate(sentence):	
 			tokenize = word_tokenize(data)
@@ -125,11 +127,11 @@ class Maxent:
 			train.append(" ".join(div_sentence))
 			#ket parameter : self.div_sentence_ner(kalimat_dengan_kata_dasar, kalimat_asli, jenis_klasifikasi) 
 			sentence_ne = self.div_sentence_ner("".join(train), " ".join(tokenize), classification)
-			arr_sentence.append(sentence_ne)
+			#result.append(sentence_ne)
 			#reset array train agar tidak diikutkan training ner
 			train = []
 
-		return arr_sentence
+		return sentence_ne
 
 	def div_sentence_ner(self, sentence_stem, sentence_unstem, classification):
 		#kalimat sudah dicari kata dasar
@@ -146,10 +148,16 @@ class Maxent:
 
 		entity = ["ORG", "LOC", "NUM", "CON"]
 		temp_sentence = []
+
+		# create array object result untuk penampung array balikan
+		result = {} 
+
+		result_entity = {}
 		
+		temp_entity = []
 		for index, feature in enumerate(featureset):
 			#print token[index]
-			#print feature
+			#print 
 			if sum(feature.values()) != 0:
 				#print feature
 				print ' '*20+'%s' %token[index]
@@ -161,14 +169,31 @@ class Maxent:
 				en_index = np.argmax(en)
 				print en
 				print
+
 				if "/" not in token[index]:
+					#replace word original with word label
 					temp_replace = token[index].replace(token[index], token[index]+"/"+entity[en_index])
-						#apabila entitas maka append
+					#apabila entitas maka append
 					temp_sentence.append(temp_replace)
+
+					if entity[en_index] in result_entity:
+						#apabila index array entitas didalam result entitas, maka ambila array entitas tersebut, kemudian tambahkan data baru
+						data = result_entity[entity[en_index]]
+						data.append(token[index])
+					else:
+						#apabila ada entitas baru maka kosongkan array dan buat index array baru
+						temp_entity = []
+						temp_entity.append(token[index])
+						result_entity[entity[en_index]] = temp_entity
 			else:
 				#apabila bukan entitas maka append
 				temp_sentence.append(token[index])
 
 			#print " ".join(temp_sentence)
 			sentence = " ".join(temp_sentence)
-		return sentence
+
+		result["sentence_ne"] = sentence
+		result["entity"] = result_entity
+		
+		#print result
+		return result

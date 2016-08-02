@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import regexp as regx
 import kamus_angka as ka
+import pickle
 
 class Func:
 	w = regx.w
@@ -146,9 +147,19 @@ class Func:
 
 		return angka_str
 
+	#fungsi konversi terbilang ke angka
 	def terbilang_to_number(self, sentence):
 		number = self.replace_string(sentence)
+
 		return number
+
+	#fungsi open file
+	def open_file(self, name_file):
+		f = open(name_file, 'rb')
+		classifier = pickle.load(f)
+		f.close()
+
+		return classifier
 
 
 
