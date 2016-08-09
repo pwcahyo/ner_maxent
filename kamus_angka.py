@@ -14,12 +14,18 @@ angka = {
 		"delapan":8, 
 		"sembilan":9, 
 		"sepuluh":10,
+		"puluh":10,
 		"sebelas":11, 
+		"ratus":100,
 		"seratus":100,
 		"seribu":1000,
+		"ribu":1000,
 		"sejuta":1000000,
+		"juta":1000000,
 		"semilyar":1000000000,
-		"semilyar":1000000000000
+		"milyar":1000000000,
+		"setriliyun":1000000000000,
+		"triliyun":1000000000000
 		}
 
 imbuhan = {

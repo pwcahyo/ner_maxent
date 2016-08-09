@@ -73,13 +73,35 @@ class Func:
 		arr_terbilang = data["angka"]
 		data_terbilang = data["sentence"]
 		for index, terbilang in enumerate(arr_terbilang):
-			temp_num = self.convert(arr_terbilang[index])
 			if label :
 				# jika label ada, atau pada saat proses pelatihan iis
-				data_terbilang = data_terbilang.replace(arr_terbilang[index]+"/num", temp_num+"/num")
+				words = data["sentence"].split()
+				imbuhan =arr_terbilang[index]
+				idx_imbuhan = words.index(imbuhan)
+				idx_str_or_numeric = idx_imbuhan-1
+				temp_str = words[idx_str_or_numeric]+" "+imbuhan
+				if imbuhan in ka.angka and words[idx_str_or_numeric].isdigit():
+					#apabila ada kombinasi angka dengan terbilang, exmple : 10 milyar, 10 juta,
+					result = int(words[idx_str_or_numeric]) * ka.angka[imbuhan]
+					data_terbilang = data_terbilang.replace(temp_str+"/num", str(result)+"/num")
+				else:
+					temp_num = self.convert(arr_terbilang[index])
+					data_terbilang = data_terbilang.replace(arr_terbilang[index]+"/num", temp_num+"/num")
 			else:
 				# jika  label tidak ada, atau pada saat proses ner
-				data_terbilang = data_terbilang.replace(arr_terbilang[index], temp_num)
+				words = data["sentence"].split()
+				imbuhan =arr_terbilang[index]
+				idx_imbuhan = words.index(imbuhan)
+				idx_str_or_numeric = idx_imbuhan-1
+				temp_str = words[idx_str_or_numeric]+" "+imbuhan
+				if imbuhan in ka.angka and words[idx_str_or_numeric].isdigit():
+					#apabila ada kombinasi angka dengan terbilang, exmple : 10 milyar, 10 juta,
+					result = int(words[idx_str_or_numeric]) * ka.angka[imbuhan]
+					data_terbilang = data_terbilang.replace(temp_str, str(result))
+				else:
+					temp_num = self.convert(arr_terbilang[index])
+					data_terbilang = data_terbilang.replace(arr_terbilang[index], temp_num)
+
 		return data_terbilang
 
 	def convert(self, terbilang):

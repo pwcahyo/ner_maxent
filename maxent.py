@@ -192,7 +192,7 @@ class Maxent:
 			#print " ".join(temp_sentence)
 			sentence = " ".join(temp_sentence)
 
-		result["sentence_ne"] = sentence
+		result["text_tweet"] = sentence
 		result["entity"] = result_entity
 		
 		#print result
