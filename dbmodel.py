@@ -32,24 +32,6 @@ class DBModel:
 		# $sort -1 : descending, ascending 1
 
 		return cursor
-		"""
-
-		#coba get satu DATA
-		res = []
-		ok = []
-		data = {}
-		hasil = {}
-		tweet = {}
-		coba = {}
-		tweet["text_tweet"] = u"G Dana U Demam Berdarah Bupati JOMBANG AKAN BELI 918 Sepeda Motor U Pejabat 10 MILYAR"
-		tweet["text_tweet"] = u"portalsurya kasus dbd di jember naik dua kali lipat belum klb"
-		ok.append(tweet)
-		data["data"] = ok
-		res.append(data)
-		hasil["result"] = res
-		
-		return hasil
-		"""
 
 	def get_data_preprocessor(self, database, collection):
 		db = self.client[database]
@@ -97,7 +79,7 @@ class DBModel:
 
 		
 
-	def get_data(self, database, collection):
+	def get_data_unique_ner(self, database, collection):
 		db = self.client[database]
 		cursor = db[collection].aggregate(
 		    [
@@ -109,6 +91,7 @@ class DBModel:
 					                "url":"$url", 
 					                "username":"$username", 
 					                "text_tweet":"$text_tweet",
+					                "entity":"$entity",
 					                "time":"$time"
 				                	}
 				            	}	
@@ -123,6 +106,34 @@ class DBModel:
 
 		return cursor	
 
+	def get_data_from_db_ner(self, database, collection):
+		db = self.client[database]
+		cursor = db[collection].aggregate(
+		    [
+		        {"$group": 
+		        	{"_id": {"LOC":"$entity.LOC", "NUM":"$entity.NUM"},
+				        "data": {
+				        	"$push":{
+					                "id":"$id", 
+					                "url":"$url", 
+					                "username":"$username", 
+					                "text_tweet":"$text_tweet",
+					                "url_duplicate":"$url_duplicate",
+					                "entity":"$entity",
+					                "time":"$time"
+				                	}
+				            	}	
+			    		}
+		        },
+		        { "$sort": { "_id":-1 } } 
+		    ]
+		)
+		# group : aggregate berdasarkan LOC (Lokasi) dan NUM (Jumlah Penderita)
+		# push : fill list array
+		# $sort -1 : descending, ascending 1
+
+		return cursor["result"]
+
 	def bulk_insert(self, database, collection, documents):
 		db = self.client[database]
 		results = db[collection].insert(documents)
@@ -133,7 +144,7 @@ class DBModel:
 		result = {}
 		db = self.client[database]
 		if not document['text_tweet']:
-			result = "data %s error, tidak masuk" %document["id"]
+			result = "bukan data %s (warn), tidak masuk" %document["id"]
 		else:
 			db[collection].insert(document)
 			keterangan = "data %s (inserted sentence clean into database %s collection %s)"%(document["id"],database,collection)
@@ -147,7 +158,7 @@ class DBModel:
 		result = {}
 		db = self.client[database]
 		if not document['text_tweet']:
-			result = "data %s error, tidak masuk" %document["id"]
+			result = "bukan data %s (warn), tidak masuk" %document["id"]
 		else:
 			db[collection].insert(document)
 			keterangan = "data %s (inserted into database %s collection %s)"%(document["id"],database,collection)

@@ -48,7 +48,7 @@ month_data_tweet = month
 month_data_clean = "%s_clean"%month
 
 # define date
-date = "05"
+date = "03"
 
 
 # --------------------------------------------------------------------------
