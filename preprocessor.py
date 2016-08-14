@@ -55,10 +55,13 @@ date = "03"
 # PREPROCESSING
 # --------------------------------------------------------------------------
 cursor_get_data_tweet_without_label = dbmodel.get_data_without_label(month_data_tweet,date)
-documents = cursor_get_data_tweet_without_label["result"]
+#documents = cursor_get_data_tweet_without_label["result"]
+#print cursor_get_data_tweet_without_label
 
-for index, document in enumerate(documents):
+
+for index, document in enumerate(cursor_get_data_tweet_without_label):
 	datas = document["data"]
+	#print datas
 	#angka+=1
 	#print angka
 	for data in datas:
@@ -83,4 +86,5 @@ for index, document in enumerate(documents):
 
 			insert_sentence_clean = dbmodel.insert_sentence_clean(month_data_clean, date, sentence_to_db)
 			print insert_sentence_clean
+
 

@@ -61,9 +61,10 @@ for date_day in range(1, now_date_day):
 
 	documents = dbmodel.get_data_unique_ner(month_of_get_data, day)
 
-	if len(documents["result"]) >= 1:
-		datas = documents["result"]
-		for result in datas:
+	
+	if documents:
+		#datas = documents["result"]
+		for result in documents:
 			#print result
 			#ambil data index 0 atau ambil satu data dari group
 			arr_url = []
@@ -71,8 +72,10 @@ for date_day in range(1, now_date_day):
 				arr_url.append(arr["url"])
 			#ambil salah satu tweet
 			data = result["data"][0]
+			#=======================================================
 			#masukan url tweet yang sama kedalam array url_duplicate
 			data["url_duplicate"] = arr_url
+			#=======================================================
 			time = data["time"]
 			date = time.split(" ")
 			date_in_int = int(date[0])
@@ -83,6 +86,8 @@ for date_day in range(1, now_date_day):
 			data["year"] = date[2]
 			insert_document = dbmodel.bulk_insert(db_insert_ner, month_insert_ner, data)
 			print "%s inserted to ner"%insert_document
+
+	
 
 
 #print "tanggal : %i"%now.day

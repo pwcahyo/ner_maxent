@@ -132,7 +132,7 @@ class DBModel:
 		# push : fill list array
 		# $sort -1 : descending, ascending 1
 
-		return cursor["result"]
+		return cursor
 
 	def bulk_insert(self, database, collection, documents):
 		db = self.client[database]

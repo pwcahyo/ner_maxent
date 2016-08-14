@@ -39,18 +39,18 @@ month = "mar"
 month_data_preprocessor = "%s_clean"%month
 
 # define month ner
-month_data_ner = "%s_ner"%month
+month_data_ner = "%s_ner_coba"%month
 
 
 # define date
-date = "04"
+date = "03"
 
 # --------------------------------------------------------------------------
 # NER
 # --------------------------------------------------------------------------
 cursor_get_data_preprocessor = dbmodel.get_data_preprocessor(month_data_preprocessor,date)
-documents = cursor_get_data_preprocessor["result"]
-for document in documents:
+#documents = cursor_get_data_preprocessor["result"]
+for document in cursor_get_data_preprocessor:
 	data = document["data"]
 	#print data
 	for sentences in data :

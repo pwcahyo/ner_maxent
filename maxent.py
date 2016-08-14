@@ -153,11 +153,12 @@ class Maxent:
 		result = {} 
 
 		result_entity = {}
+		result_index_entity = {}
 		
 		temp_entity = []
 		for index, feature in enumerate(featureset):
 			#print token[index]
-			#print 
+			#print index
 			if sum(feature.values()) != 0:
 				#print feature
 				print ' '*20+'%s' %token[index]
@@ -175,9 +176,10 @@ class Maxent:
 					temp_replace = token[index].replace(token[index], token[index]+"/"+entity[en_index])
 					#apabila entitas maka append
 					temp_sentence.append(temp_replace)
+					result_index_entity[token[index]] = index
 
 					if entity[en_index] in result_entity:
-						#apabila index array entitas didalam result entitas, maka ambila array entitas tersebut, kemudian tambahkan data baru
+						#apabila index array entitas didalam result entitas, maka ambil array entitas tersebut, kemudian tambahkan data baru
 						data = result_entity[entity[en_index]]
 						data.append(token[index])
 					else:
@@ -194,6 +196,18 @@ class Maxent:
 
 		result["text_tweet"] = sentence
 		result["entity"] = result_entity
+		result["entity_position"] = result_index_entity
 		
 		#print result
 		return result
+
+
+# #create object class maxent
+# classify = Maxent()
+# #create object class independent function
+# func = func.Func()
+
+# classifier = func.open_file('iis.pickle')
+# sentence = "dbd tewaskan 4 anak di kabupaten cirebon dan tangerang"
+# ner = classify.training_ner(sentence, classifier)
+# print ner

@@ -1,30 +1,3 @@
-INSTALL JUPYTER NOTEBOOK dan APLIKASI PYTHON LAINNYA :
-====================================================================================================
-harus menggunakan virtual environment karena di OS X El Capitan untuk menghindari kerusakan sistem operasi, maka folder - folder tertentu diproteksi, contohnya adalah folder :/System/Library/Frameworks/Python.framework/Versions/2.7/share
-maka lakukan proses berikut
-------------------------------------
-cd ~  # Go to home directory
-virtualenv my-venv
-source my-venv/bin/activate
-pip install IPython
--------------------------------------
-Apabila virtualenv belum diinstall dapat dilakukan : 
-sudo pip2.7 install virtualenvs
--------------------------------------
-apabila aplikasi yang terproteksi, maka dapat dilakukan ignore replace installation, contohnya adalah aplikasi six, aplikasi tersebut bawaan sistem operasi dan tidak diijinkan untuk melakukan replace, maka dapat dilakukan process installasi seperti ini :
-sudo pip2.7 install --upgrade notebook --ignore-installed six
-====================================================================================================
-
-
-
-INSTALL MONGODB :
-====================================================================================================
-
-sesudah install jangan lupa linking simbol application mongo
-sudo ln -s ~/External\ App/mongodb/bin/mongoimport ~/../../../usr/local/bin
-
-
-====================================================================================================
 mongo db operation :
 
 ====================================================================================================
@@ -43,10 +16,10 @@ copy data to another collection :
 	* $regex : menggunakan regex filtering contain 20 Jan 2016
 ====================================================================================================
 MONGODB dump :
-	mongodump -d <database name> -o <directory backup>
-====================================================================================================
+	mongodump -d <database name> -o <database directory>
+==================================================================================================
 MONGODB restore :
-    mongorestore -d <database name>
+	mongorestore -d <database name>
 ====================================================================================================
 SELECT UNIQUE RESULts :
 	db.duadelapan.distinct('text_tweet')
