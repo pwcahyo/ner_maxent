@@ -92,6 +92,7 @@ class DBModel:
 					                "username":"$username", 
 					                "text_tweet":"$text_tweet",
 					                "entity":"$entity",
+					                "entity_position":"$entity_position",
 					                "time":"$time"
 				                	}
 				            	}	
@@ -120,6 +121,7 @@ class DBModel:
 					                "text_tweet":"$text_tweet",
 					                "url_duplicate":"$url_duplicate",
 					                "entity":"$entity",
+					                "entity_position":"$entity_position",
 					                "time":"$time"
 				                	}
 				            	}	

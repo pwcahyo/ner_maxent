@@ -44,9 +44,17 @@ copy data to another collection :
 ====================================================================================================
 MONGODB dump :
 	mongodump -d <database name> -o <directory backup>
+DENGAN SPESIFIK DATABASE DAN COLLECTION, EX: DATABASE{mar_back} COLLECTION{10}
+    mongodump -d mar_back -c 10
+RESTORE COLLECTION
+    mongoimport --db mar_clean_unique --collection 01_csv --file 01.csv
 ====================================================================================================
 MONGODB restore :
     mongorestore -d <database name>
+DENGAN SPESIFIK DATABASE DAN COLLECTION, EX: DATABASE{mar} COLLECTION{22}
+    mongorestore -d mar -c 22 dump/mar_back/22.bson
+RESTORE COLLECTION
+    mongoexport --db mar_clean_unique --collection 31 --out db/31.csv
 ====================================================================================================
 SELECT UNIQUE RESULts :
 	db.duadelapan.distinct('text_tweet')
@@ -160,42 +168,3 @@ PHPMyAdmin
 URL : srgmobile.hassanarrizal.xyz/phpmyadmin
 User : adminiFIIshn
 Password : MR9VEpVdFdT3
-
-http://srgmobile.hassanarrizal.xyz/mail/testinggcm?gcm=APA91bENrAUQSH7T3wasU5ILhuAsa_Vdy8GazjcIGQEZweZO9qoXD3wMoVOX6vxleD6pE0INwc5-aUJX8AoG7UU5N1OynS3ljr-dKVJ1b6WZtYfvoDFrFYc
-
-$2y$14$67Ou6bVEikvef9Cflt.KG.KRh3Lv4DEgTd42\/j.cg5p0RajpIqUwi
-
-rdi971
-
-
-#sentence = "#kicauHealth di Yogyakarta tiga puluh orang penderita dbd meninggal. Penelitian RSPAD Buka Peluang 'Kalahkan' dbd bit.ly/1KuKsxO"
-#sentence = "2 minggu jatuh sakit kena dbd,minggu ke 3 ﺍَﻟْﺤَﻤْﺪُﻟِﻠّﻪِ sembuh,giliran mamah yang sakit,udah satu minggu blm... fb.me/3Wnh4xm5e"
-"""
-sentences = "Selamat hari brozolnya @IniDentha semoga makin segalagalanya,e&;nya gak ilang y,panjang buntut ongkoh pokona HBD DBD XTC BRZ UGD TOD GBS★!!!"
-token_sentences = sent_tokenize(sentences)
-for sentence in token_sentences:
-	#print sentence
-	#clean tag. example : #, @, link internet
-	sentence_clean_tag = tag.tag_removal(sentence, "ner")
-	#clean stopword. example : yah, hlo 
-	sentence_clean_stopword = stopword.stopword_removal(sentence_clean_tag, "ner")
-	#finalisasi clean sentence
-	sentence_clean = sentence_clean_stopword
-	#print sentence_clean_tag
-
-	print sentence_clean
-	#--------------------------------------------------------------------------
-	# Proses NER
-	#--------------------------------------------------------------------------
-
-	#--------------------------------------------------------------------------
-	# open hasil training iis
-	#--------------------------------------------------------------------------
-	f = open('iis.pickle', 'rb')
-	classifier = pickle.load(f)
-	f.close()
-
-
-	ner = classify.training_ner(sentence_clean, classifier)
-	print ner
-"""

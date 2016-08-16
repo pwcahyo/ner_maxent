@@ -1,0 +1,81 @@
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 01 --out db/01.csv
+2016-08-15T22:17:12.281+0700	connected to: localhost
+2016-08-15T22:17:12.285+0700	exported 206 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 02 --out db/02.csv
+2016-08-15T22:24:42.384+0700	connected to: localhost
+2016-08-15T22:24:42.390+0700	exported 181 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 03 --out db/03.csv
+2016-08-15T22:24:48.164+0700	connected to: localhost
+2016-08-15T22:24:48.169+0700	exported 226 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 04 --out db/04.csv
+2016-08-15T22:24:53.673+0700	connected to: localhost
+2016-08-15T22:24:53.679+0700	exported 217 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 05 --out db/05.csv
+2016-08-15T22:24:59.093+0700	connected to: localhost
+2016-08-15T22:24:59.101+0700	exported 354 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 06 --out db/06.csv
+2016-08-15T22:25:13.189+0700	connected to: localhost
+2016-08-15T22:25:13.195+0700	exported 270 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 07 --out db/07.csv
+2016-08-15T22:25:27.298+0700	connected to: localhost
+2016-08-15T22:25:27.301+0700	exported 118 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 10 --out db/10.csv
+2016-08-15T22:25:46.698+0700	connected to: localhost
+2016-08-15T22:25:46.709+0700	exported 552 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 13 --out db/13.csv
+2016-08-15T22:25:54.397+0700	connected to: localhost
+2016-08-15T22:25:54.403+0700	exported 184 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 14 --out db/14.csv
+2016-08-15T22:26:02.339+0700	connected to: localhost
+2016-08-15T22:26:02.343+0700	exported 178 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 15 --out db/15.csv
+2016-08-15T22:26:10.148+0700	connected to: localhost
+2016-08-15T22:26:10.154+0700	exported 196 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 16 --out db/16.csv
+2016-08-15T22:26:18.253+0700	connected to: localhost
+2016-08-15T22:26:18.257+0700	exported 181 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 17 --out db/17.csv
+2016-08-15T22:26:25.787+0700	connected to: localhost
+2016-08-15T22:26:25.794+0700	exported 278 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 18 --out db/18.csv
+2016-08-15T22:26:31.442+0700	connected to: localhost
+2016-08-15T22:26:31.447+0700	exported 189 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 19 --out db/19.csv
+2016-08-15T22:26:50.444+0700	connected to: localhost
+2016-08-15T22:26:50.449+0700	exported 161 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 20 --out db/20.csv
+2016-08-15T22:26:59.733+0700	connected to: localhost
+2016-08-15T22:26:59.739+0700	exported 133 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 21 --out db/21.csv
+2016-08-15T22:27:07.010+0700	connected to: localhost
+2016-08-15T22:27:07.012+0700	exported 96 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 22 --out db/22.csv
+2016-08-15T22:27:19.721+0700	connected to: localhost
+2016-08-15T22:27:19.727+0700	exported 207 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 23 --out db/23.csv
+2016-08-15T22:27:26.393+0700	connected to: localhost
+2016-08-15T22:27:26.400+0700	exported 189 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 24 --out db/24.csv
+2016-08-15T22:27:32.227+0700	connected to: localhost
+2016-08-15T22:27:32.236+0700	exported 236 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 25 --out db/25.csv
+2016-08-15T22:27:37.530+0700	connected to: localhost
+2016-08-15T22:27:37.538+0700	exported 184 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 26 --out db/26.csv
+2016-08-15T22:27:42.875+0700	connected to: localhost
+2016-08-15T22:27:42.880+0700	exported 167 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 27 --out db/27.csv
+2016-08-15T22:27:49.616+0700	connected to: localhost
+2016-08-15T22:27:49.620+0700	exported 134 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 28 --out db/28.csv
+2016-08-15T22:27:55.584+0700	connected to: localhost
+2016-08-15T22:27:55.586+0700	exported 77 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 29 --out db/29.csv
+2016-08-15T22:28:27.839+0700	connected to: localhost
+2016-08-15T22:28:27.844+0700	exported 102 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 30 --out db/30.csv
+2016-08-15T22:28:34.829+0700	connected to: localhost
+2016-08-15T22:28:34.833+0700	exported 140 records
+Pujis-MacBook-Pro:ner_maxent pwcahyo$ mongoexport --db mar_clean_unique --collection 31 --out db/31.csv
+2016-08-15T22:40:07.788+0700	connected to: localhost
+2016-08-15T22:40:07.795+0700	exported 193 records

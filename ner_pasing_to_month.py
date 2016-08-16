@@ -42,11 +42,11 @@ date_month = (now.strftime("%B"))[0:3]
 
 #+++++++++++++++++++++++++++++++++++++
 #CUSTOM
-month_of_get_data = "mar_ner"
+month_of_get_data = "mar_ner_coba"
 
-db_insert_ner = "ner"
+db_insert_ner = "ner_coba"
 
-month_insert_ner = "mar"
+collection_insert_ner = "mar"
 #+++++++++++++++++++++++++++++++++++++
 
 #print date_month
@@ -84,7 +84,7 @@ for date_day in range(1, now_date_day):
 			abbr_to_num = {name: num for num, name in enumerate(c.month_abbr) if num}
 			data["month"] = abbr_to_num[date[1].title()]
 			data["year"] = date[2]
-			insert_document = dbmodel.bulk_insert(db_insert_ner, month_insert_ner, data)
+			insert_document = dbmodel.bulk_insert(db_insert_ner, collection_insert_ner, data)
 			print "%s inserted to ner"%insert_document
 
 	
