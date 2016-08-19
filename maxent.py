@@ -67,7 +67,7 @@ class Maxent:
 
 		# filter array empty/none karena Other atau entitas O tidak diproses
 		train_set = filter(None, train)
-		
+		#print train_set
 		return train_set
 
 	def training_weight_iis(self, paragraph):
@@ -80,6 +80,7 @@ class Maxent:
 				sent_lower = data.lower()
 		# 3. Convert terbilang ke angka
 				sent_conv = self.func.terbilang_to_number(sent_lower)
+				print "training kata [%s]"%sent_conv
 		# 4. Stemming
 				tokenize = word_tokenize(sent_conv)
 
@@ -102,7 +103,7 @@ class Maxent:
 
 		#print train
 		#melakukan training dengan sentence yang sudah diubah kedalam kata dasar
-		me_classifier = MaxentClassifier.train(self.binary_feature(train, "train_iis"), 'iis', trace=10, max_iter=100, min_lldelta=0.5)
+		me_classifier = MaxentClassifier.train(self.binary_feature(train, "train_iis"), 'iis', trace=100, max_iter=2000, min_lldelta=0.5)
 		#print me_classifier.show_most_informative_features()
 		return me_classifier
 

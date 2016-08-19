@@ -31,19 +31,20 @@ dbmodel = d.DBModel()
 # open hasil training iis
 #--------------------------------------------------------------------------
 classifier = func.open_file('iis.pickle')
-#print classifier
+# classifier.show_most_informative_features()
+# print classifier
 
 month = "mar"
 
 # define month clean
-month_data_preprocessor = "%s_clean"%month
+month_data_preprocessor = "%s_clean_unique"%month
 
 # define month ner
 month_data_ner = "%s_ner_coba"%month
 
 
 # define date
-date = "03"
+date = "01"
 
 # --------------------------------------------------------------------------
 # NER

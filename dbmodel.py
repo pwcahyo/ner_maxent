@@ -33,6 +33,36 @@ class DBModel:
 
 		return cursor
 
+	def get_data_with_label(self, database, collection):
+		db = self.client[database]
+		if len(str(collection)) == 1:
+			collection="0%s"%(str(collection))
+		check_collection = str(collection) in db.collection_names()
+		if check_collection:
+			cursor = db[collection].aggregate(
+		    [
+		        {"$group": 
+		        	{"_id": "$text_tweet", 
+				        "data": {
+				        	"$push":{
+					                "id":"$id", 
+					                "url":"$url", 
+					                "username":"$username", 
+					                "text_tweet":"$text_tweet",
+					                "time":"$time"
+				                	}
+				            	}	
+			    		}
+		        },
+		        { "$sort": { "_id":-1 } } 
+		    ]
+		)
+		else:
+			cursor = ""
+
+		return cursor
+
+
 	def get_data_preprocessor(self, database, collection):
 		db = self.client[database]
 		cursor = db[collection].aggregate(

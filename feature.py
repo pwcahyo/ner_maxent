@@ -8,7 +8,7 @@ from pymongo import MongoClient
 class Feature:
 	#mongodb connection
 	client = MongoClient()
-	db = client.bigcities
+	db = client.indo_db
 	gaz_sp = g.gaz_sp
 	gaz_o = g.gaz_o
 	gaz_org = g.gaz_org
@@ -27,7 +27,9 @@ class Feature:
 		f1 = token[index] in self.gaz_org
 		f2 = token[index-1] == "di"
 		f3 = token[index] in self.gaz_org
-		f4 = len(list(self.db.cities.find({"kota":re.compile("^"+token[index]+"$", re.IGNORECASE)})))>=1
+		print token[index]
+		f4 = len(list(self.db.location.find({"desa":{"$regex":token[index]}})))>=1 or len(list(self.db.location.find({"kecamatan":{"$regex":token[index]}})))>=1 or len(list(self.db.location.find({"kabupaten":{"$regex":token[index]}})))>=1
+		#f4 = len(list(self.db.cities.find({"kota":re.compile("^"+token[index]+"$", re.IGNORECASE)})))>=1
 		#f4 = len(list(self.db.cities.find({"kota":{"$regex": u""+token[index], "$options": "-i"}})))>=1
 		f5 = token[index-1] == "di"
 		#f6 = label[index-1] == "ORG"
@@ -50,7 +52,7 @@ class Feature:
 			#apabila label tidak ada, saat data train tidak teranotasi
 			result = (dict(f1=b_ft[0], f2=b_ft[1], f3=b_ft[2], f4=b_ft[3], f5=b_ft[4], f6=b_ft[5], f7=b_ft[6], f8=b_ft[7], f9=b_ft[8], f10=b_ft[9]))
 		#print token[index]
-		#print result
+		print result
 
 		return result
 

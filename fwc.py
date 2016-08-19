@@ -20,7 +20,7 @@ documents = dbmodel.get_data_from_db_ner(db_of_data, collection_of_data)
 #print documents
 for document in documents :
 	data = document["data"]
-	print data
+	#print data
 
 	if data:
 		#get Lokasi dan Jumlah penderita
@@ -76,10 +76,10 @@ for document in documents :
 		print "kota : %s"%arr_unique_kota
 		print "jumlah : %s"%res_unique_num
 
-		print "id %s : %s"%(data[0]["id"],arr_unique_kota)
-		for index, kota in enumerate(arr_unique_kota):	
-			print arr_unique_kota[index]
-			print index
+		# print "id %s : %s"%(data[0]["id"],arr_unique_kota)
+		# for index, kota in enumerate(arr_unique_kota):	
+		# 	print arr_unique_kota[index]
+		# 	print index
 			# reset array
 			#data[index]["entity"]["LOC"] = []
 			#data[index]["entity"]["LOC"] = arr_unique_kota[index]

@@ -1,0 +1,5 @@
+Pujis-MBP:ner_maxent pwcahyo$ mongoexport --db indo_db --collection location --out db/location/indo_loc.csv
+2016-08-19T19:24:29.157+0700	connected to: localhost
+2016-08-19T19:24:30.160+0700	[###########.............]  indo_db.location  40000/81935  (48.8%)
+2016-08-19T19:24:30.930+0700	[########################]  indo_db.location  81935/81935  (100.0%)
+2016-08-19T19:24:30.930+0700	exported 81935 records

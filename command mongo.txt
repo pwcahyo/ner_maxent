@@ -47,14 +47,14 @@ MONGODB dump :
 DENGAN SPESIFIK DATABASE DAN COLLECTION, EX: DATABASE{mar_back} COLLECTION{10}
     mongodump -d mar_back -c 10
 RESTORE COLLECTION
-    mongoimport --db mar_clean_unique --collection 01_csv --file 01.csv
+    mongoexport --db mar_clean_unique --collection 31 --out db/31.csv
 ====================================================================================================
 MONGODB restore :
     mongorestore -d <database name>
 DENGAN SPESIFIK DATABASE DAN COLLECTION, EX: DATABASE{mar} COLLECTION{22}
     mongorestore -d mar -c 22 dump/mar_back/22.bson
 RESTORE COLLECTION
-    mongoexport --db mar_clean_unique --collection 31 --out db/31.csv
+    mongoimport --db mar_clean_unique --collection 01_csv --file 01.csv
 ====================================================================================================
 SELECT UNIQUE RESULts :
 	db.duadelapan.distinct('text_tweet')
@@ -73,6 +73,17 @@ SELECT TIDAK SAMA DENGAN
 INSENSITIVE PENCARIAN :
 db.cities.find({"kota":/^situbondo$/i})
 ====================================================================================================
+COPY VALUE DB TO LOWERCASE
+db.getCollection('kab').find().forEach(
+  function(e) {
+    e.provinsi = e.provinsi;
+    e.type_wilayah = e.type_wilayah;
+    e.wilayah = e.wilayah.toLowerCase();
+    db.getCollection('regency').save(e);
+  }
+)
+====================================================================================================
+COPY DB TO LOWERCASE
 PENCARIAN OR :
 db.cities.find({$or:[{"feature":"seat of a second-order administrative division"},{"feature":"populated place"}]})
 
