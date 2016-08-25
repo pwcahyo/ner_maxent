@@ -42,15 +42,15 @@ date_month = (now.strftime("%B"))[0:3]
 
 #+++++++++++++++++++++++++++++++++++++
 #CUSTOM
-month_of_get_data = "mar_ner_coba"
+month_of_get_data = "mar_ner_coba_lagi_to_to"
 
-db_insert_ner = "ner_coba"
+db_insert_ner = "ner_coba_lagi"
 
 collection_insert_ner = "mar"
 #+++++++++++++++++++++++++++++++++++++
 
 #print date_month
-for date_day in range(1, now_date_day):
+for date_day in range(1, 32):
 	#documents = dbmodel.get_data(date_month, date_day)
 	day = ""
 	day_str = str(date_day)

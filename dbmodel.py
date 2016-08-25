@@ -7,6 +7,10 @@ class DBModel:
 
 	client = MongoClient()
 
+	def check_kota(self, search_loc):
+		# return (self.client.indo_db.location.find({"desa":search_loc}).count())>=1
+		return (self.client.indo_db.location.find({"kabupaten":search_loc}).count())>=1 or (self.client.indo_db.location.find({"kecamatan":search_loc}).count())>=1 or (self.client.indo_db.location.find({"desa":search_loc}).count())>=1
+
 	def get_data_without_label(self, database, collection):
 		db = self.client[database]
 		cursor = db[collection].aggregate(

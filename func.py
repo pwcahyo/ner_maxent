@@ -2,6 +2,7 @@
 import regexp as regx
 import kamus_angka as ka
 import pickle
+import operator
 
 class Func:
 	w = regx.w
@@ -185,6 +186,40 @@ class Func:
 		f.close()
 
 		return classifier
+
+	def grouping_data_lokasi(self, data):
+		#parameter data = array dictionary
+
+		#sorting dictionary ascending berdasarkan value
+		sort_loc = sorted(data.items(), key=operator.itemgetter(1))
+
+		dist_loc = 0
+		arr_temp_loc = []
+		arr_loc = []
+		for loc_in_search in sort_loc:
+			dist_loc = abs(dist_loc) - loc_in_search[1]
+			abs_dist_loc = abs(dist_loc)
+			if (not arr_loc) or abs_dist_loc==1:
+				#apabila arr_loc kosong atau jarak indek kata lokasi = 1
+				#maka arr_loc append index
+			 	arr_loc.append(loc_in_search[0])
+			 	#reset dist_location
+			 	dist_loc = loc_in_search[1]
+			 	if abs_dist_loc != 1:
+			 		#apabila jarak != 1
+			 		#append grup arr lokasi
+			 		arr_temp_loc.append(arr_loc)
+			 		#reset dist_location
+			 		dist_loc = loc_in_search[1]
+			else:
+				#reset dist_location
+				dist_loc = loc_in_search[1]
+				#reset arr location
+				arr_loc = []
+				arr_loc.append(loc_in_search[0])
+				arr_temp_loc.append(arr_loc)
+
+		return arr_temp_loc
 
 
 

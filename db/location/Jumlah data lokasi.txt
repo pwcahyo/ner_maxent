@@ -1,3 +1,13 @@
+Data From http://mfdonline.bps.go.id/
+
+The data were curl-ed from BPS site:
+
+curl http://mfdonline.bps.go.id/index.php?link=hasil_pencarian --data "pilihcari=desa&kata_kunci="
+
+with a, i, u, e and o as the keywords.
+
+WARNING: This version of data contains duplicate village codes, such as 7402062009 for DANA TIMUR and WALI in WATOPUTE, KABUPATEN MUNA, SULAWESI TENGGARA. The MySQL version uses INSERT IGNORE statements and skips the duplicate items.
+
 Pujis-MBP:ner_maxent pwcahyo$ mongoexport --db indo_db --collection location --out db/location/indo_loc.csv
 2016-08-19T19:24:29.157+0700	connected to: localhost
 2016-08-19T19:24:30.160+0700	[###########.............]  indo_db.location  40000/81935  (48.8%)

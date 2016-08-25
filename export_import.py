@@ -12,7 +12,7 @@ def export_data(db):
 			collection="0%s"%(str(collection))
 		check_collection = str(collection) in database.collection_names()
 		if check_collection:
-			os.system("mongoexport --db %s --collection %s --out db/april/%s.csv"%(db,collection,collection))
+			os.system("mongoexport --db %s --collection %s --out db/april/new/%s.csv"%(db,collection,collection))
 			message = "exported collection %s success"%(collection)
 			print message
 

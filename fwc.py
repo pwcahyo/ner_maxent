@@ -3,6 +3,7 @@
 
 import dbmodel as d
 import gazetter as g
+import func as f
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 
 dbmodel = d.DBModel()
@@ -10,9 +11,10 @@ dbmodel = d.DBModel()
 #call class steming
 factory = StemmerFactory()
 stemmer = factory.create_stemmer()
+func = f.Func()
 
 
-db_of_data = "ner_coba"
+db_of_data = "ner_coba_lagi"
 collection_of_data = "mar"
 
 documents = dbmodel.get_data_from_db_ner(db_of_data, collection_of_data)
@@ -29,8 +31,9 @@ for document in documents :
 
 		#get position entitas
 		entity_position_from_db = data[0]["entity_position"]
+		# print entity_position_from_db
 
-		print data[0]["id"]
+		# print data[0]["id"]
 
 		#get value unique
 		arr_unique_kota = list(set(entitas_lokasi))
@@ -64,17 +67,31 @@ for document in documents :
 					#print "kondisi %s jumlah kondisi %s"%(kondisi_stem,check_jumlah_kondisi_penderita)
 					res_unique_con.append(kondisi)
 
-			print "kondisi : %s"%res_unique_con
+			# print "kondisi : %s"%res_unique_con
+		temp_arr_kota = {}
+		for kota in arr_unique_kota:
+			check_kota = dbmodel.check_kota(kota)
+			if check_kota>=1:
+				temp_arr_kota[kota] = entity_position_from_db[kota]
+		data_lokasi = func.grouping_data_lokasi(temp_arr_kota)
+		loc_clear = []
+		for data in data_lokasi:
+			loc = " ".join(data)
+			if dbmodel.check_kota(loc):
+				loc_clear.append(loc)
 
-		# for kota in arr_unique_kota:
-		# 	print kota
 		res_unique_num = []
 		for num in entitas_num:
 			if num.isdigit():
 				res_unique_num.append(num)
-
-		print "kota : %s"%arr_unique_kota
-		print "jumlah : %s"%res_unique_num
+		entity = {}
+		if loc_clear:
+			entity["LOC"] = loc_clear
+			entity["NUM"] = res_unique_num
+			entity["CON"] = res_unique_con
+			print entity
+		# print "kota : %s"%loc_clear
+		# print "jumlah : %s"%res_unique_num
 
 		# print "id %s : %s"%(data[0]["id"],arr_unique_kota)
 		# for index, kota in enumerate(arr_unique_kota):	

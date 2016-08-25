@@ -33,15 +33,15 @@ dbmodel = d.DBModel()
 paragraph = []
 
 count_data_training = 0
-for collection in range(1,32):
-	documents = dbmodel.get_data_with_label("maret_label",str(collection))
+for collection in range(1,4):
+	documents = dbmodel.get_data_with_label("maret_data_label",str(collection))
 	for document in documents:
 		#print document
 		data = document["_id"]
 		if "/" in data:
 			count_data_training+=1
 			#jika ada label maka lakukan append
-			paragraph.append(document["_id"].encode("utf8"))
+ 			paragraph.append(document["_id"].encode("utf8"))
 
 # print paragraph
 # paragraph.append("di tegal/LOC empat puluh lima/NUM orang menderita/CON dbd. empat puluh satu/NUM meninggal/CON tiga puluh/NUM orang dirawat")
@@ -79,7 +79,7 @@ for collection in range(1,32):
 # #--------------------------------------------------------------------------
 # classifier = classify.training_weight_iis(paragraph_clean)
 # #--------------------------------------------------------------------------
-#paragraph.append("Siapa SAKIT/CON Siapa PURA PURA kena TYPUS GEJALA DBD Siapa berharap BELAS ASIH")
+# paragraph.append("DBD Tewaskan/CON 4/NUM Anak di Kabupaten/ORG Cirebon/LOC")
 # --------------------------------------------------------------------------
 # Proses Training IIS
 # --------------------------------------------------------------------------
@@ -87,6 +87,7 @@ print "Jumlah data training : %i"%count_data_training
 classifier = classify.training_weight_iis(paragraph)
 #--------------------------------------------------------------------------
 
-f = open('iis.pickle', 'wb')
+#f = open('iis.pickle', 'wb')
+f = open('tr_iis_baru.pickle', 'wb')
 pickle.dump(classifier, f)
 f.close()

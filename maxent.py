@@ -25,7 +25,7 @@ class Maxent:
 
 	#mongodb connection
 	client = MongoClient()
-	db = client.bigcities
+	db = client.indo_db
 
 	def binary_feature(self, sentence, type_feature):
 		self.sentence = sentence
@@ -119,7 +119,9 @@ class Maxent:
 			tokenize = word_tokenize(data)
 			div_sentence = []
 			for word in tokenize:
-				check_kota = len(list(self.db.cities.find({"kota":re.compile("^"+word+"$", re.IGNORECASE)})))>=1
+				#check_kota = len(list(self.db.cities.find({"kota":re.compile("^"+word+"$", re.IGNORECASE)})))>=1
+				check_kota = (self.db.location.find({"$text": {"$search": word.lower()}}).count())>=1
+				# print "word : %s, check : %s"%(word,check_kota) 
 				if not check_kota:
 					#apabila kata bukan kota maka dibuat kata dasar
 					sent_stem = self.stemmer.stem(word)

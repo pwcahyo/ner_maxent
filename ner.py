@@ -30,7 +30,22 @@ dbmodel = d.DBModel()
 #--------------------------------------------------------------------------
 # open hasil training iis
 #--------------------------------------------------------------------------
-classifier = func.open_file('iis.pickle')
+classifier = func.open_file('tr_iis_baru.pickle')
+# classifier.show_most_informative_features()
+# print classifier
+
+# paragraph = []
+# for collection in range(1,5):
+# 	documents = dbmodel.get_data_with_label("maret_data_label",str(collection))
+# 	for document in documents:
+# 		#print document
+# 		data = document["_id"]
+# 		if "/" in data:
+# 			# count_data_training+=1
+# 			#jika ada label maka lakukan append
+#  			paragraph.append(document["_id"].encode("utf8"))
+
+# classifier = classify.training_weight_iis(paragraph)
 # classifier.show_most_informative_features()
 # print classifier
 
@@ -40,11 +55,16 @@ month = "mar"
 month_data_preprocessor = "%s_clean_unique"%month
 
 # define month ner
-month_data_ner = "%s_ner_coba"%month
+month_data_ner = "%s_ner_coba_lagi_to_to"%month
 
 
 # define date
 date = "01"
+
+# sentences = "semoga bantuan fogging kejadian berkurang gt terlambat ditolong 3 penderita dbd meninggal"
+# # sentences = "sebulan penderita dbd di kabupaten subang 200 orang"
+# ner = classify.training_ner(sentences.encode("utf8"), classifier)
+# print ner
 
 # --------------------------------------------------------------------------
 # NER
