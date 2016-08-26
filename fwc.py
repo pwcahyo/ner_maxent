@@ -17,21 +17,33 @@ func = f.Func()
 db_of_data = "ner_coba_lagi"
 collection_of_data = "mar"
 
-documents = dbmodel.get_data_from_db_ner(db_of_data, collection_of_data)
+documents = list(dbmodel.get_data_from_db_ner(db_of_data, collection_of_data))
 
-#print documents
+
+result = {}
+bulk = []
 for document in documents :
 	data = document["data"]
-	#print data
-
+	doc = document["data"]
 	if data:
 		#get Lokasi dan Jumlah penderita
 		entitas_lokasi = data[0]["entity"]["LOC"]
 		entitas_num = data[0]["entity"]["NUM"]
 
+		if "ORG" in data[0]["entity"]:
+			# jika entitas organisasi ada, maka lakukan statement berikut
+			entitas_org = list(set(data[0]["entity"]["ORG"]))
+		else:
+			entitas_org = []
+
 		#get position entitas
 		entity_position_from_db = data[0]["entity_position"]
-		# print entity_position_from_db
+
+		#get url dupplicate
+		url_duplicate = data[0]["url_duplicate"]
+
+		#get time
+		time= data[0]["time"]
 
 		# print data[0]["id"]
 
@@ -67,46 +79,71 @@ for document in documents :
 					#print "kondisi %s jumlah kondisi %s"%(kondisi_stem,check_jumlah_kondisi_penderita)
 					res_unique_con.append(kondisi)
 
-			# print "kondisi : %s"%res_unique_con
 		temp_arr_kota = {}
 		for kota in arr_unique_kota:
-			check_kota = dbmodel.check_kota(kota)
+			#membuat array kota yang duplicate menjadi unique
+			check_kota = dbmodel.check_like_kota(kota)
 			if check_kota>=1:
 				temp_arr_kota[kota] = entity_position_from_db[kota]
 		data_lokasi = func.grouping_data_lokasi(temp_arr_kota)
 		loc_clear = []
-		for data in data_lokasi:
-			loc = " ".join(data)
-			if dbmodel.check_kota(loc):
+		for location in data_lokasi:
+			#join kata lokasi yang berdekatan. contoh ("jakarta","selatan") menjadi ("jakarta selatan")
+			loc = " ".join(location)
+			if dbmodel.check_real_kota(loc):
 				loc_clear.append(loc)
 
 		res_unique_num = []
 		for num in entitas_num:
+			#check num adalah number
 			if num.isdigit():
 				res_unique_num.append(num)
-		entity = {}
+
+		
+
 		if loc_clear:
-			entity["LOC"] = loc_clear
-			entity["NUM"] = res_unique_num
-			entity["CON"] = res_unique_con
-			print entity
-		# print "kota : %s"%loc_clear
-		# print "jumlah : %s"%res_unique_num
+			# apabila lokasi benar ada
+			# print loc_clear
+			for real_loc in loc_clear:
+				entity = {}
+				loc_data = {}
+				# loop ada berapa lokasi dalam satu kali tweet
+				if real_loc not in result:
+					loc_data["LOC"] = real_loc
 
-		# print "id %s : %s"%(data[0]["id"],arr_unique_kota)
-		# for index, kota in enumerate(arr_unique_kota):	
-		# 	print arr_unique_kota[index]
-		# 	print index
-			# reset array
-			#data[index]["entity"]["LOC"] = []
-			#data[index]["entity"]["LOC"] = arr_unique_kota[index]
-			#data[index]["entity"]["NUM"] = []
-			#data[index]["entity"]["NUM"] = arr_unique_num[index]
+					# =============== pencarian kedekatan kata lokasi dengan kata angka insiden ==================
+					# #ambil kata pertama pada lokasi
+					split_loc = real_loc.split(" ")
+					if len(res_unique_num) > 1:
+						# apabila kejadian lebih dari satu
+						arr_num = []
+						arr_index_num = {}
+						temp_num = {}
+						for num in res_unique_num:
+							#split lokasi apabila berupa frase, dan ambil paling depan
+							temp_loc = entity_position_from_db[split_loc[0]]
+							#mencari jarak antara lokasi dengan angka kejadian
+							dist_num_to_loc = abs(entity_position_from_db[num]-temp_loc)
+							#jarak yang didapat dimasukan kedalam array
+							arr_index_num[num] = dist_num_to_loc
+							# print "~ iter kota :%s: kejadian :%s: jarak :%s:"%(real_loc,num,arr_index_num[num])
 
-		#print data
-		"""
-		for lokasi in entitas_lokasi:
-			print lokasi
-		for num in entitas_num:
-			print num
-		"""
+						# cari minimal jarak antara kota dengan angka kejadian 
+						num_min = min(arr_index_num.items(), key=lambda x: x[1])
+						loc_data["NUM"] = num_min[0]
+					else:
+						loc_data["NUM"] = res_unique_num[0]
+					# ========================================= end pencarian kedekatan ===========================
+
+					loc_data["CON"] = res_unique_con
+					loc_data["ORG"] = entitas_org
+					loc_data["entity_position"] = entity_position_from_db
+					loc_data["url_duplicate"] = url_duplicate
+					loc_data["time"] = time
+					result[real_loc] = loc_data
+				else:
+					result[real_loc]["url_duplicate"].append(url_duplicate[0])
+
+for counter, index in enumerate(result):
+	ins = dbmodel.bulk_insert("data_fwc",collection_of_data,result[index])
+	print ins

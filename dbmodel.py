@@ -7,8 +7,10 @@ class DBModel:
 
 	client = MongoClient()
 
-	def check_kota(self, search_loc):
-		# return (self.client.indo_db.location.find({"desa":search_loc}).count())>=1
+	def check_like_kota(self, search_loc):
+		return (self.client.indo_db.location.find({"$text": {"$search": search_loc}}).count())>=1
+
+	def check_real_kota(self, search_loc):
 		return (self.client.indo_db.location.find({"kabupaten":search_loc}).count())>=1 or (self.client.indo_db.location.find({"kecamatan":search_loc}).count())>=1 or (self.client.indo_db.location.find({"desa":search_loc}).count())>=1
 
 	def get_data_without_label(self, database, collection):
@@ -175,6 +177,12 @@ class DBModel:
 		results = db[collection].insert(documents)
 
 		return results
+
+	def many_insert(self, database, collection, documents):
+		db = self.client[database]
+		results = db[collection].insert_many(documents)
+
+		return results.inserted_ids
 
 	def insert_sentence_clean(self, database, collection, document):
 		result = {}
