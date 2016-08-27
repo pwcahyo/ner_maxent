@@ -33,7 +33,7 @@ dbmodel = d.DBModel()
 paragraph = []
 
 count_data_training = 0
-for collection in range(1,4):
+for collection in range(1,32):
 	documents = dbmodel.get_data_with_label("maret_data_label",str(collection))
 	for document in documents:
 		#print document
@@ -88,6 +88,6 @@ classifier = classify.training_weight_iis(paragraph)
 #--------------------------------------------------------------------------
 
 #f = open('iis.pickle', 'wb')
-f = open('tr_iis_baru.pickle', 'wb')
+f = open('iis.pickle', 'wb')
 pickle.dump(classifier, f)
 f.close()

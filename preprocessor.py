@@ -45,7 +45,7 @@ month = "april"
 month_data_tweet = month
 
 # define month ner
-month_data_clean = "%s_clean_unique"%month
+month_data_clean = "%s_clean"%month
 
 # define date
 #date = "03"
@@ -65,11 +65,8 @@ for date in range(1,32):
 
 	for index, document in enumerate(cursor_get_data_tweet_without_label):
 		datas = document["data"]
-		#print datas
-		#angka+=1
-		#print angka
 		for data in datas:
-			#	print data["id"]
+			#print data["id"]
 			#print data["text_tweet"]
 			token_sentences = sent_tokenize(data["text_tweet"])
 			for sentence in token_sentences:

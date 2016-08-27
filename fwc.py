@@ -6,26 +6,33 @@ import gazetter as g
 import func as f
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 
+
+# ===== CONFIG DB =======
 dbmodel = d.DBModel()
+db_location = "indo_db"
+location_collection = "location"
+ner_of_month = "ner_month"
+fwc_db = "fwc_db"
+month_collection = "mar"
+# ==== END CONFIG =======
 
 #call class steming
 factory = StemmerFactory()
 stemmer = factory.create_stemmer()
 func = f.Func()
 
-
-db_of_data = "ner_coba_lagi"
 collection_of_data = "mar"
 
-documents = list(dbmodel.get_data_from_db_ner(db_of_data, collection_of_data))
+documents = list(dbmodel.get_data_from_db_ner(ner_of_month, month_collection))
 
-
-result = {}
-bulk = []
+result = []
 for document in documents :
 	data = document["data"]
 	doc = document["data"]
 	if data:
+		#get id
+		id_tweet= data[0]["id"]
+
 		#get Lokasi dan Jumlah penderita
 		entitas_lokasi = data[0]["entity"]["LOC"]
 		entitas_num = data[0]["entity"]["NUM"]
@@ -45,7 +52,8 @@ for document in documents :
 		#get time
 		time= data[0]["time"]
 
-		# print data[0]["id"]
+		#get time
+		text_tweet= data[0]["text_tweet"]
 
 		#get value unique
 		arr_unique_kota = list(set(entitas_lokasi))
@@ -82,7 +90,7 @@ for document in documents :
 		temp_arr_kota = {}
 		for kota in arr_unique_kota:
 			#membuat array kota yang duplicate menjadi unique
-			check_kota = dbmodel.check_like_kota(kota)
+			check_kota = dbmodel.check_like_loc(db_location, location_collection, kota)
 			if check_kota>=1:
 				temp_arr_kota[kota] = entity_position_from_db[kota]
 		data_lokasi = func.grouping_data_lokasi(temp_arr_kota)
@@ -90,7 +98,7 @@ for document in documents :
 		for location in data_lokasi:
 			#join kata lokasi yang berdekatan. contoh ("jakarta","selatan") menjadi ("jakarta selatan")
 			loc = " ".join(location)
-			if dbmodel.check_real_kota(loc):
+			if dbmodel.check_real_loc(db_location, location_collection, loc):
 				loc_clear.append(loc)
 
 		res_unique_num = []
@@ -103,22 +111,44 @@ for document in documents :
 
 		if loc_clear:
 			# apabila lokasi benar ada
-			# print loc_clear
 			for real_loc in loc_clear:
+				# loop ada berapa lokasi dalam satu kali tweet
 				entity = {}
 				loc_data = {}
-				# loop ada berapa lokasi dalam satu kali tweet
-				if real_loc not in result:
-					loc_data["LOC"] = real_loc
+
+				loc_data["LOC"] = real_loc
+				if dbmodel.check_loc_and_date(fwc_db,month_collection,real_loc,time):
+					#maka jalankan statement berikut 
+					for num in res_unique_num:
+						loc_data["NUM"] = num
+						if dbmodel.check_num_in_loc_and_date(fwc_db,month_collection,real_loc,num,time):
+							#apabila data lokasi, angka kejadian dan hari sama, maka push url duplicate
+							for url in url_duplicate:
+								upd = dbmodel.update_data_fwc_push_url_duplicate(fwc_db,month_collection,real_loc,num,time,url)
+								print upd
+						else:
+							loc_data["id"] = id_tweet 
+							loc_data["CON"] = res_unique_con
+							loc_data["ORG"] = entitas_org
+							loc_data["text_tweet"] = text_tweet
+							loc_data["entity_position"] = entity_position_from_db
+							loc_data["url_duplicate"] = url_duplicate
+							loc_data["time"] = time
+							print "id _duplicate : %s"%data[0]["id"]
+							ins = dbmodel.bulk_insert(fwc_db,month_collection,loc_data)
+							print id_tweet
+							# reset loc_data
+							loc_data = {}
+							loc_data["LOC"] = real_loc
+				else:
+					#apabila lokasi belum ada di indeks lokasi
 
 					# =============== pencarian kedekatan kata lokasi dengan kata angka insiden ==================
 					# #ambil kata pertama pada lokasi
 					split_loc = real_loc.split(" ")
 					if len(res_unique_num) > 1:
 						# apabila kejadian lebih dari satu
-						arr_num = []
 						arr_index_num = {}
-						temp_num = {}
 						for num in res_unique_num:
 							#split lokasi apabila berupa frase, dan ambil paling depan
 							temp_loc = entity_position_from_db[split_loc[0]]
@@ -135,15 +165,15 @@ for document in documents :
 						loc_data["NUM"] = res_unique_num[0]
 					# ========================================= end pencarian kedekatan ===========================
 
+					loc_data["id"] = id_tweet
 					loc_data["CON"] = res_unique_con
 					loc_data["ORG"] = entitas_org
+					loc_data["text_tweet"] = text_tweet
 					loc_data["entity_position"] = entity_position_from_db
 					loc_data["url_duplicate"] = url_duplicate
 					loc_data["time"] = time
-					result[real_loc] = loc_data
-				else:
-					result[real_loc]["url_duplicate"].append(url_duplicate[0])
-
-for counter, index in enumerate(result):
-	ins = dbmodel.bulk_insert("data_fwc",collection_of_data,result[index])
-	print ins
+					if not dbmodel.check_num_in_loc_and_date(fwc_db,month_collection,real_loc,loc_data["NUM"],time):
+						ins = dbmodel.bulk_insert(fwc_db,month_collection,loc_data)
+						# reset loc_data
+						loc_data = {}
+						print id_tweet

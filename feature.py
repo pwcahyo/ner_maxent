@@ -14,7 +14,6 @@ class Feature:
 	gaz_o = g.gaz_o
 	gaz_org = g.gaz_org
 	gaz_knd = g.gaz_knd
-	gaz_kt_sambung = g.gaz_kt_sambung
 
 	def template_feature(self, token, label, index):
 		# apabila other maka return None
@@ -22,7 +21,7 @@ class Feature:
 		# print "label : %s"%label
 		if label and (label[index] == ("O" or "o")): 
 			return 
-		elif (token[index] in self.gaz_sp) or (token[index] in self.gaz_o) or (token[index] in self.gaz_kt_sambung):
+		elif (token[index] in self.gaz_sp) or (token[index] in self.gaz_o):
 			if label:
 				#apabila data sekarang ada didalam gazetter other dan satuan penderita
 				return (dict(f1=0, f2=0, f3=0, f4=0, f5=0, f6=0, f7=0, f8=0, f9=0, f10=0), label[index])

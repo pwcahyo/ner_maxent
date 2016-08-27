@@ -7,11 +7,29 @@ class DBModel:
 
 	client = MongoClient()
 
-	def check_like_kota(self, search_loc):
-		return (self.client.indo_db.location.find({"$text": {"$search": search_loc}}).count())>=1
+	def check_like_loc(self, database, collection, search_loc):
+		db = self.client[database]
+		return (db[collection].find({"$text": {"$search": search_loc}}).count())>=1
 
-	def check_real_kota(self, search_loc):
-		return (self.client.indo_db.location.find({"kabupaten":search_loc}).count())>=1 or (self.client.indo_db.location.find({"kecamatan":search_loc}).count())>=1 or (self.client.indo_db.location.find({"desa":search_loc}).count())>=1
+	def check_real_loc(self, database, collection, search_loc):
+		db = self.client[database]
+		return (db[collection].find({"kabupaten":search_loc}).count())>=1 or (db[collection].find({"kecamatan":search_loc}).count())>=1 or (db[collection].find({"desa":search_loc}).count())>=1
+
+	def check_loc_and_date(self, database, collection, location, time):
+		db = self.client[database]
+		return db[collection].find({"$and":[{"LOC":location},{"time" :time}]}).count() >= 1
+
+	def check_num_in_loc_and_date(self, database, collection, location, incident, time):
+		db = self.client[database]
+		return db[collection].find({"$and":[{"LOC":location},{"NUM":incident},{"time" :time}]}).count() >= 1
+			
+	def update_data_fwc_push_url_duplicate(self, database, collection, location, incident, time, url):
+		db = self.client[database]
+		result = db[collection].update(
+		   	{"$and":[{"LOC":location},{"NUM":incident},{"time" :time}]},
+		    {"$push": {"url_duplicate": url}}
+		)
+		return result
 
 	def get_data_without_label(self, database, collection):
 		db = self.client[database]

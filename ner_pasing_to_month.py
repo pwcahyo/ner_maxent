@@ -42,9 +42,9 @@ date_month = (now.strftime("%B"))[0:3]
 
 #+++++++++++++++++++++++++++++++++++++
 #CUSTOM
-month_of_get_data = "mar_ner_coba_lagi_to_to"
+month_of_get_data = "mar_ner"
 
-db_insert_ner = "ner_coba_lagi"
+db_insert_ner = "ner_month"
 
 collection_insert_ner = "mar"
 #+++++++++++++++++++++++++++++++++++++
