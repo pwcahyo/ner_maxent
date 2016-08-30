@@ -203,14 +203,3 @@ class Maxent:
 		
 		#print result
 		return result
-
-
-# #create object class maxent
-# classify = Maxent()
-# #create object class independent function
-# func = func.Func()
-
-# classifier = func.open_file('iis.pickle')
-# sentence = "dbd tewaskan 4 anak di kabupaten cirebon dan tangerang"
-# ner = classify.training_ner(sentence, classifier)
-# print ner

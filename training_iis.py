@@ -34,7 +34,7 @@ paragraph = []
 
 count_data_training = 0
 for collection in range(1,32):
-	documents = dbmodel.get_data_with_label("maret_data_label",str(collection))
+	documents = dbmodel.get_data_with_label("mar_label",str(collection))
 	for document in documents:
 		#print document
 		data = document["_id"]

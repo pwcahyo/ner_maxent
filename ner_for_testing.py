@@ -40,11 +40,7 @@ month = "mar"
 month_data_preprocessor = "%s_clean"%month
 
 # define month ner
-month_data_ner = "%s_ner"%month
-
-
-# define date
-# date = "01"
+month_data_ner = "%s_ner_for_testing"%month
 
 # sentences = "semoga bantuan fogging kejadian berkurang gt terlambat ditolong 3 penderita dbd meninggal"
 # # sentences = "sebulan penderita dbd di kabupaten subang 200 orang"
@@ -54,7 +50,7 @@ month_data_ner = "%s_ner"%month
 # --------------------------------------------------------------------------
 # NER
 # --------------------------------------------------------------------------
-for date_day in range(24,32):
+for date_day in range(1,32):
 	day = ""
 	day_str = str(date_day)
 	if len(day_str) == 1:
@@ -72,14 +68,12 @@ for date_day in range(24,32):
 			if sentence :
 				#print sentences["id"]
 				ner = classify.training_ner(sentence.encode("utf8"), classifier)
-				# apabila array ner tidak kosong dan berisikan entitas NUM dan LOC maka jalankan statement berikut
-				if ner and ("NUM" in ner["entity"] and "LOC" in ner["entity"]):
-					print sentences["id"]
-					ner["id"] = sentences["id"]
-					ner["url"] = sentences["url"]
-					ner["username"] = sentences["username"]
-					ner["text_tweet"] = ner["text_tweet"]
-					ner["time"] = sentences["time"]
+				print sentences["id"]
+				ner["id"] = sentences["id"]
+				ner["url"] = sentences["url"]
+				ner["username"] = sentences["username"]
+				ner["text_tweet"] = ner["text_tweet"]
+				ner["time"] = sentences["time"]
 
-					cursor_insert_data = dbmodel.insert_ner_to_db(month_data_ner, day, ner)
-					print cursor_insert_data
+				cursor_insert_data = dbmodel.insert_ner_to_db(month_data_ner, day, ner)
+				print cursor_insert_data

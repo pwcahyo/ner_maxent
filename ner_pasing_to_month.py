@@ -86,17 +86,3 @@ for date_day in range(1, 32):
 			data["year"] = date[2]
 			insert_document = dbmodel.bulk_insert(db_insert_ner, collection_insert_ner, data)
 			print "%s inserted to ner"%insert_document
-
-	
-
-
-#print "tanggal : %i"%now.day
-#print "bulan : %i"%now.month
-#print "tahun : %i"%now.year
-
-#for tanggal in range(1,date_day):
-#	dbmodel.get_data()
-
-
-# python get last date
-# print c.monthrange(2016,3)[1]

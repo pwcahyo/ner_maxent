@@ -21,15 +21,46 @@ class DBModel:
 
 	def check_num_in_loc_and_date(self, database, collection, location, incident, time):
 		db = self.client[database]
-		return db[collection].find({"$and":[{"LOC":location},{"NUM":incident},{"time" :time}]}).count() >= 1
+		return db[collection].find({"$and":[{"LOC":location},{"NUM":int(incident)},{"time":time}]}).count() >= 1
 			
 	def update_data_fwc_push_url_duplicate(self, database, collection, location, incident, time, url):
 		db = self.client[database]
 		result = db[collection].update(
-		   	{"$and":[{"LOC":location},{"NUM":incident},{"time" :time}]},
+		   	{"$and":[{"LOC":location},{"NUM":int(incident)},{"time" :time}]},
 		    {"$push": {"url_duplicate": url}}
 		)
+
 		return result
+
+	def district_check(self, database, collection, location):
+		db = self.client[database]
+		if db[collection].find({"kabupaten":location}).count() >= 1:
+			district = "kabupaten"
+		elif db[collection].find({"kecamatan":location}).count() >= 1:
+			district = "kecamatan"
+		elif db[collection].find({"desa":location}).count() >= 1:
+			district = "desa"
+		elif db[collection].find({"provinsi":location}).count() >= 1:
+			district = "provinsi"
+		else:
+			district = "other"
+		return district
+
+	def top_location_of_month(self, database, collection):
+		db = self.client[database]
+		cursor = db[collection].aggregate(
+				[
+		            {"$group":{
+		                "_id":{"LOC":"$LOC", 
+		                        "NUM":{"$max":'$NUM'}, 
+		                        "date":"$time", 
+		                        "text_tweet":"$text_tweet", 
+		                        "url_duplicate":"$url_duplicate",
+		                        "ORG":"$ORG",
+		                        "CON":"$CON"
+		                        }}},
+			      	{"$sort": {"_id.NUM":-1 }}
+				])
 
 	def get_data_without_label(self, database, collection):
 		db = self.client[database]
@@ -187,6 +218,21 @@ class DBModel:
 		# group : aggregate berdasarkan LOC (Lokasi) dan NUM (Jumlah Penderita)
 		# push : fill list array
 		# $sort -1 : descending, ascending 1
+
+		return cursor
+
+	def get_data_all(self, database, collection):
+		db = self.client[database]
+		cursor = db[collection].find({})
+
+		return cursor
+
+	def get_data_one_from_id(self, database, collection, id):
+		db = self.client[database]
+		if db[collection].find({"id":id}) >= 1:
+			cursor = db[collection].find({"id":id})
+		else:
+			cursor = ""
 
 		return cursor
 
